@@ -5,11 +5,12 @@
         <h1>Robert Gerald Williams</h1>
     </hgroup>
 
-    <a href="/Assets/Content/Robert_G_Williams-Resume.pdf" style="text-decoration:underline; font-size:1.2em; margin-bottom:22px;">Download My Resume</a>
 
     <article>
+
+        <a href="/Assets/Content/Robert_G_Williams-Resume.pdf" style="text-decoration: underline; font-size: 1.2em; margin-bottom: 22px;">Download My Resume</a>
         <p>
-            I have been a Sitecore Certified Developer for nearly 4 years. 
+            I have been a Sitecore Certified Developer for nearly 4 years. I have 
         </p>
     </article>
 
