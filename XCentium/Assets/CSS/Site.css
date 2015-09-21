@@ -298,3 +298,14 @@ td button {
 .carousel-indicators li {
     border: 1px solid #333 !important;
 }
+
+.results-table {
+    margin-left: 35px;
+}
+
+.table-row-header {
+    font-weight: 600;
+}
+.table-row-header td:first-of-type{
+    width:50px;
+}

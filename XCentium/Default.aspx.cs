@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using HtmlAgilityPack;
 
@@ -157,16 +158,38 @@ namespace XCentium
                     key = g.Key,
                     count = g.Count()
                 }).ToList();
+            
+            //Create Table, Row, and Cell controls.
+            HtmlTable table = new HtmlTable();
+            table.Attributes.Add("class", "results-table");
+            HtmlTableRow row;
+            HtmlTableCell cell;
 
-            // Initialize a stringbuilder to prepare the presentation of the results.
-            StringBuilder wordRangingResults = new StringBuilder();
+            // Add header values to the table.
+            row = new HtmlTableRow();
+            cell = new HtmlTableCell();
+            row.Attributes.Add("class", "table-row-header");
+            cell.InnerText = "Count";
+            row.Cells.Add(cell);
+            cell = new HtmlTableCell();
+            cell.InnerText = "Word";
+            row.Cells.Add(cell);
+            table.Rows.Add(row);
 
-            // Display the results.
+            // Fill the table with the results.
             foreach (var word in wordRankings)
             {
-                wordRangingResults.Append(word.count + " " + word.key + "</br>");
+                row = new HtmlTableRow();
+                cell = new HtmlTableCell();
+                cell.InnerText = word.count.ToString();
+                row.Cells.Add(cell);
+                cell = new HtmlTableCell();
+                cell.InnerText = word.key;
+                row.Cells.Add(cell);
+                table.Rows.Add(row);
             }
-            outputWordList.InnerHtml += wordRangingResults.ToString();
+            // Add the table to the placeholder.
+            phResultsTable.Controls.Add(table);
         }
 
         protected string GetItemClass(int index)

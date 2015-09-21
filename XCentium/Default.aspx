@@ -44,5 +44,6 @@
             </div>
         </asp:Panel>
         <label class="output-list" id="outputWordList" visible="false" runat="server"></label>
+        <asp:PlaceHolder ID="phResultsTable" runat="server"></asp:PlaceHolder>
     </div>
 </asp:Content>
