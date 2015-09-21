@@ -7,11 +7,63 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace XCentium
-{
-
-
-    public partial class _Default
-    {
+namespace XCentium {
+    
+    
+    public partial class _Default {
+        
+        /// <summary>
+        /// urlInput control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox urlInput;
+        
+        /// <summary>
+        /// outputError control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl outputError;
+        
+        /// <summary>
+        /// carouselPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel carouselPanel;
+        
+        /// <summary>
+        /// indicators control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater indicators;
+        
+        /// <summary>
+        /// images control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater images;
+        
+        /// <summary>
+        /// outputWordList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl outputWordList;
     }
 }
