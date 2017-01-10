@@ -19,13 +19,16 @@ namespace XCentium
             outputWordList.InnerHtml = string.Empty;
             carouselPanel.Visible = false;
 
-            string url = urlInput.Text;
+
+            string inputUrl = urlInput.Text;
 
             // Add protocol if missing
-            if (!url.Contains(@"http://") || !url.Contains(@"https://"))
+            if (!inputUrl.Contains(@"http://") && !inputUrl.Contains(@"https://"))
             {
-                url = @"http://" + url;
+                inputUrl = @"https://" + inputUrl;
             }
+
+            Uri url = new Uri(inputUrl);
 
             // Make sure the URL is valid
             try
@@ -38,7 +41,7 @@ namespace XCentium
             catch (Exception ex)
             {
                 // Explain issue with URL in Error
-                outputError.InnerHtml = "URL does not resolve.</br></br>" + ex.Message + "</br>" + ex.StackTrace;
+                outputError.InnerHtml = "URL does not resolve: " + url + "</br></br>" + ex.Message + "</br>" + ex.StackTrace;
                 outputError.Visible = true;
                 return;
             }
@@ -57,16 +60,22 @@ namespace XCentium
             FindWords(doc);
         }
 
-        private void FindImages(string url, HtmlDocument doc)
+        private void FindImages(Uri url, HtmlDocument doc)
         {
             Func<string, string> getSrc = src =>
             {
                 // Check to see if img path is relative
-                if (src[0] == '~' || src[0] == '/')
+                if (src[0] == '~')
                 {
                     // Prefix with url if needed.
-                    src = url + src;
+                    src = url.Scheme + @"://" + url.Host + "/" + src;
                 }
+                if (src[0] == '/')
+                {
+                    // Prefix with url if needed.
+                    src = url.Scheme + @"://" + url.Host + src;
+                }
+
                 return src;
             };
 
@@ -155,7 +164,7 @@ namespace XCentium
                     key = g.Key,
                     count = g.Count()
                 }).ToList();
-            
+
             //Create Table, Row, and Cell controls.
             HtmlTable table = new HtmlTable();
             table.Attributes.Add("class", "results-table");

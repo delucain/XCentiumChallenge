@@ -19,7 +19,7 @@
             and student workers.
         </p>
         <p>
-            I have been a Sitecore Certified Developer for nearly 4 years. I have received both the standard and advanced developer certifications for Sitecore version 6 
+            I have been a Sitecore Certified Developer for nearly 5 years. I have received both the standard and advanced developer certifications for Sitecore version 6 
             through Sitecore Training. I hope to continue my training with the Sitecore 7 and 8 certifications. I also intend to learn more about administering Sitecore 
             environments by getting the Sitecore System Administrator certification.
         </p>
@@ -29,8 +29,8 @@
     <aside>
         <h3>Additional Skills and Experience</h3>
         <p>
-            I am the Director of Education at the <a href="https://atxhs.org">ATX Hackerspace</a>. I'm responsible for developing new curriculum, scheduling classes, 
-            recruiting skilled teachers, budgeting materials and classroom expenses, and teaching several classes, including New Member Orientation, Welding, and CNC 
+            I spent over a year as the Director of Education at the <a href="https://atxhs.org">ATX Hackerspace</a>. I'm responsible for developing new curriculum, scheduling 
+            classes, recruiting skilled teachers, budgeting materials and classroom expenses, and teaching several classes, including New Member Orientation, Welding, and CNC 
             Laser Cutting. I have years of experience welding and building complex machines and electronics using everything from professional blueprints, crude sketches, 
             or even just verbal descriptions as guides. I am also capable of creating professional blueprints and 3D models for both mechanical and electrical engineering 
             projects.

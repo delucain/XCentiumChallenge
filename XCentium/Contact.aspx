@@ -19,9 +19,6 @@
             <h3>Email:</h3>
         </header>
         <p>
-            <span><a href="mailto:rob@ihaveathought.com">rob@ihaveathought.com</a></span>
-        </p>
-        <p>
             <span><a href="mailto:ashandrik@gmail.com">ashandrik@gmail.com</a></span>
         </p>
     </section>
