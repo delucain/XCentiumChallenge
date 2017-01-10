@@ -19,7 +19,7 @@ namespace XCentium
             outputWordList.InnerHtml = string.Empty;
             carouselPanel.Visible = false;
 
-
+            // Set url from text box
             string inputUrl = urlInput.Text;
 
             // Add protocol if missing
@@ -28,23 +28,29 @@ namespace XCentium
                 inputUrl = @"https://" + inputUrl;
             }
 
-            Uri url = new Uri(inputUrl);
-
             // Make sure the URL is valid
             try
             {
                 // Only pull HEAD data for speed
-                WebRequest request = WebRequest.Create(url);
+                WebRequest request = WebRequest.Create(inputUrl);
                 request.Method = "HEAD";
                 request.GetResponse();
             }
             catch (Exception ex)
             {
                 // Explain issue with URL in Error
-                outputError.InnerHtml = "URL does not resolve: " + url + "</br></br>" + ex.Message + "</br>" + ex.StackTrace;
+                outputError.InnerHtml = "URL does not resolve: " + inputUrl;
+                // Allow debugMode to show full error information
+                if (Request.QueryString["debugMode"] == "true")
+                {
+                    outputError.InnerHtml += "</br></br>" + ex.Message + "</br>" + ex.StackTrace;
+                }
                 outputError.Visible = true;
                 return;
             }
+
+            // Create Uri from provided url input
+            Uri url = new Uri(inputUrl);
 
             // Initialize a WebClient
             WebClient client = new WebClient();
@@ -67,15 +73,25 @@ namespace XCentium
                 // Check to see if img path is relative
                 if (src[0] == '~')
                 {
-                    // Prefix with url if needed.
+                    // Prefix with url if needed and return src
                     src = url.Scheme + @"://" + url.Host + "/" + src;
+                    return src;
                 }
                 if (src[0] == '/')
                 {
-                    // Prefix with url if needed.
+                    // Check to see if the image path is Url Scheme agnostic
+                    if (src[1] == '/')
+                    {
+                        // Add appropriate url scheme and return src
+                        src = url.Scheme + @":" + src;
+                        return src;
+                    }
+                    // Prefix with url if needed and return src
                     src = url.Scheme + @"://" + url.Host + src;
+                    return src;
                 }
 
+                // Return src if unmodified
                 return src;
             };
 
@@ -96,6 +112,12 @@ namespace XCentium
                     }
                     return string.Empty;
                 };
+
+            // Clean document of script tags to remove marketing/tracking pixels
+            doc.DocumentNode.Descendants()
+                .Where(n => n.Name == "script" || n.Name == "noscript")
+                .ToList()
+                .ForEach(n => n.Remove());
 
             // Use LINQ to get all Images
             var foundImages = (from HtmlNode node in doc.DocumentNode.SelectNodes("//img")
