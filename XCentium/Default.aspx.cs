@@ -172,7 +172,8 @@ namespace XCentium
             }
 
             // Use LINQ to find 10 most frequently used words and their usage count
-            var wordRankings = Regex.Split(cleanedOutput, @"\W+")
+            Regex regexSplit = new Regex(@"\W+");
+            var wordRankings = regexSplit.Split(cleanedOutput)
                 .GroupBy(s => s)
                 .OrderByDescending(g => g.Count())
                 .Take(10)
