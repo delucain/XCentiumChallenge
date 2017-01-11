@@ -4,7 +4,7 @@
 <html lang="en">
 <head runat="server">
     <meta charset="utf-8" />
-    <title><%: Page.Title %> - My ASP.NET Application</title>
+    <title><%: Page.Title %> - XCentium Challenge Scraper</title>
     
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link href="/Assets/CSS/Site.css" rel="stylesheet" type="text/css" />

@@ -25,7 +25,8 @@ namespace XCentium
             // Add protocol if missing
             if (!inputUrl.Contains(@"http://") && !inputUrl.Contains(@"https://"))
             {
-                inputUrl = @"https://" + inputUrl;
+                // If no protocol specified, use the protocol the client used to access this site
+                inputUrl = Request.Url.Scheme + @"://" + inputUrl;
             }
 
             // Make sure the URL is valid
@@ -134,7 +135,7 @@ namespace XCentium
             images.DataSource = foundImages;
             images.DataBind();
 
-            // Show carousel if images are found.
+            // Show carousel if images are found
             if (foundImages.Count() > 0)
             {
                 carouselPanel.Visible = true;
@@ -156,19 +157,13 @@ namespace XCentium
             // Parse Html for all text nodes in body tag ignoring scripts
             foreach (HtmlNode node in doc.DocumentNode.SelectNodes("//body//*[not(self::script)]/text()"))
             {
-                sb.Append(node.InnerText + " ");
+                // Use HtmlDecode to decode any encoded characters and shift everything to lowercase to ensure proper comparisons later
+                sb.Append(WebUtility.HtmlDecode(node.InnerText.ToLower() + " "));
             }
+                       
+            string cleanedOutput = sb.ToString();
 
-            // Remove punctuation.
-            // Set to lowercase.
-            // Remove a few commonly encoded characters for clarity.
-            // Remove newline characters.
-            // Trim trailing whitespace
-            string cleanedOutput = new string(sb.ToString().ToCharArray()
-                .Where(c => !char.IsPunctuation(c)).ToArray())
-                .ToLower().Replace("&nbsp;", " ").Replace("&copy;", " ").Replace("\n", " ").Replace("\r", " ").Trim();
-
-            // Find wordcount.
+            // Find wordcount 
             outputWordList.InnerHtml += "Word Count: " + Regex.Matches(cleanedOutput, @"[A-Za-z0-9]+").Count.ToString() + "</br></br>";
 
             if (outputWordList.InnerText.Count() > 0)
@@ -176,7 +171,7 @@ namespace XCentium
                 outputWordList.Visible = true;
             }
 
-            // Use LINQ to find 10 most frequently used words and their usage count.
+            // Use LINQ to find 10 most frequently used words and their usage count
             var wordRankings = Regex.Split(cleanedOutput, @"\W+")
                 .GroupBy(s => s)
                 .OrderByDescending(g => g.Count())
@@ -187,13 +182,13 @@ namespace XCentium
                     count = g.Count()
                 }).ToList();
 
-            //Create Table, Row, and Cell controls.
+            //Create Table, Row, and Cell controls
             HtmlTable table = new HtmlTable();
             table.Attributes.Add("class", "results-table");
             HtmlTableRow row;
             HtmlTableCell cell;
 
-            // Add header values to the table.
+            // Add header values to the table
             row = new HtmlTableRow();
             cell = new HtmlTableCell();
             row.Attributes.Add("class", "table-row-header");
@@ -203,8 +198,8 @@ namespace XCentium
             cell.InnerText = "Word";
             row.Cells.Add(cell);
             table.Rows.Add(row);
-
-            // Fill the table with the results.
+        
+            // Fill the table with the results
             foreach (var word in wordRankings)
             {
                 row = new HtmlTableRow();
@@ -216,18 +211,18 @@ namespace XCentium
                 row.Cells.Add(cell);
                 table.Rows.Add(row);
             }
-            // Add the table to the placeholder.
+            // Add the table to the placeholder
             phResultsTable.Controls.Add(table);
         }
 
         protected string GetItemClass(int index)
         {
-            // Return "active" class for first item in carousel.
+            // Return "active" class for first item in carousel
             if (index == 0)
             {
                 return "active";
             }
-            // Return nothing for remaining items.
+            // Return nothing for remaining items
             return string.Empty;
         }
     }
