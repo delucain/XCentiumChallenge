@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using HtmlAgilityPack;
+using System.Collections.Generic;
 
 namespace XCentium
 {
@@ -145,34 +146,51 @@ namespace XCentium
         private void FindWords(HtmlDocument doc)
         {
             StringBuilder sb = new StringBuilder();
-
+            
+            // Check for null text nodes in DOM
             if (doc.DocumentNode.SelectNodes("//body//*[not(self::script)]/text()") == null)
             {
-                // Explain null image issue in Error
+                // Explain null text error
                 outputError.InnerHtml = "No Body and/or Text Found.</br>";
                 outputError.Visible = true;
                 return;
             }
 
-            // Parse Html for all text nodes in body tag ignoring scripts
+            // Use XPath to parse Html for all text nodes in body tag ignoring scripts
             foreach (HtmlNode node in doc.DocumentNode.SelectNodes("//body//*[not(self::script)]/text()"))
             {
                 // Use HtmlDecode to decode any encoded characters and shift everything to lowercase to ensure proper comparisons later
-                sb.Append(WebUtility.HtmlDecode(node.InnerText.ToLower() + " "));
+                sb.Append(WebUtility.HtmlDecode(node.InnerText + " "));
             }
                        
-            string cleanedOutput = sb.ToString();
+            // Create a variable to track total word count
+            int wordCount = 0;
+            // Create a variable to store the word list
+            List<string> wordList = new List<string>();
 
-            // Find wordcount 
-            outputWordList.InnerHtml += "Word Count: " + Regex.Matches(cleanedOutput, @"[A-Za-z0-9]+").Count.ToString() + "</br></br>";
+            // Create regex. Use compiled regex options and pattern for best performance
+            // Make sure pattern includes apostrophes for contractions and hyphens for compound words
+            Regex matchRegex = new Regex(@"[a-z]+'[a-z]+|[a-z]+-[a-z]+|[a-z0-9]+", RegexOptions.IgnoreCase);
+
+            foreach(Match m in matchRegex.Matches(sb.ToString()))
+            {
+                // Increment word count
+                wordCount++;
+                // Add next word to list
+                wordList.Add(m.ToString());
+            }
+
+            // Display word count
+            outputWordList.InnerHtml += "Word Count: " + wordCount.ToString() + "</br></br>";
 
             if (outputWordList.InnerText.Count() > 0)
             {
+                // Show word count as long as there are more than zero words (at least one)
                 outputWordList.Visible = true;
             }
 
-            // Use LINQ to find 10 most frequently used words and their usage count
-            var wordRankings = Regex.Split(cleanedOutput, @"\W+")
+            // Use LINQ to find 10 most frequently used words and their usage count from our word list
+            var wordRankings = wordList
                 .GroupBy(s => s)
                 .OrderByDescending(g => g.Count())
                 .Take(10)
@@ -182,13 +200,13 @@ namespace XCentium
                     count = g.Count()
                 }).ToList();
 
-            //Create Table, Row, and Cell controls
+            //Create Table, Row, and Cell controls to display word frequency
             HtmlTable table = new HtmlTable();
             table.Attributes.Add("class", "results-table");
             HtmlTableRow row;
             HtmlTableCell cell;
 
-            // Add header values to the table
+            // Add header values to the word frequency table
             row = new HtmlTableRow();
             cell = new HtmlTableCell();
             row.Attributes.Add("class", "table-row-header");
@@ -199,7 +217,7 @@ namespace XCentium
             row.Cells.Add(cell);
             table.Rows.Add(row);
         
-            // Fill the table with the results
+            // Fill the word frequency table with the results
             foreach (var word in wordRankings)
             {
                 row = new HtmlTableRow();
@@ -211,7 +229,7 @@ namespace XCentium
                 row.Cells.Add(cell);
                 table.Rows.Add(row);
             }
-            // Add the table to the placeholder
+            // Add the word frequncy table to the relevant placeholder
             phResultsTable.Controls.Add(table);
         }
 
