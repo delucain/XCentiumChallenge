@@ -299,6 +299,10 @@ td button {
     border: 1px solid #333 !important;
 }
 
+.carousel-inner .item img {
+    max-height: 400px;
+}
+
 .results-table {
     margin-left: 35px;
 }
